@@ -5,8 +5,9 @@ import com.hero.model.Hero;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HeroService {
@@ -23,13 +24,26 @@ public class HeroService {
         return hero;
     }
 
-    public List<ApiResponseHeroes> getHero(String name) {
+    public List<Hero> getHero(String name) {
+
+        List<Hero> filteredHeroes = new ArrayList<>();
+
         RestTemplate restTemplate = new RestTemplate();
         ApiResponseHeroes ar = restTemplate.getForObject(API_URL + "/search/" + name, ApiResponseHeroes.class);
 
+
+        //CASO QUEIRA FITRAR
+        List<Hero> heroes = ar.results();
+        filteredHeroes = heroes.stream()
+                .filter(hero -> hero.name().toLowerCase().contains("spider"))
+                .collect(Collectors.toList());
+
         //System.out.println("LINK: "+API_URL + "/search/" + name);
 
-        return Arrays.asList(ar);
+        //RETORNO FILTRADO - PRECISA ALTERAR O RETORNO NO METODO
+        return filteredHeroes;
+
+        //return Arrays.asList(ar);
     }
 
 }

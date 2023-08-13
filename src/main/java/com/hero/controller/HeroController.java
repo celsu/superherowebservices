@@ -33,12 +33,9 @@ public class HeroController {
 
     @GetMapping("/search/{name}")
     public ResponseEntity getHeroName(@PathVariable("name") String name) {
-        List<Hero> filteredHeroes = new ArrayList<>();
 
-        List<ApiResponseHeroes> he = hs.getHero(name);
-
-
-        he.forEach((us) -> System.out.println(us.results()));
+        //List<ApiResponseHeroes> he = hs.getHero(name);
+        //he.forEach((us) -> System.out.println(us.results()));
 
         /*he.forEach((us) -> {
             List<Hero> filteredHeroes = us.results().stream()
@@ -47,9 +44,10 @@ public class HeroController {
             filteredHeroes.forEach(hero -> System.out.println("Name: " + hero.name()));
         });*/
 
-        System.out.println(he);
+        //FILTRO
+        List<Hero> he = hs.getHero(name);
 
-        return null;
+        return ResponseEntity.ok(he);
 
     }
 }
